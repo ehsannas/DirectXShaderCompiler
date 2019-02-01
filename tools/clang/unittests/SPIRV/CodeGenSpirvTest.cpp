@@ -1763,4 +1763,14 @@ TEST_F(FileTest, PreprocessorError) {
   runFileTest("preprocess.error.hlsl", Expect::Failure);
 }
 
+TEST_F(FileTest, DecorationRelaxedPrecisionBasic) {
+  runFileTest("decoration.relaxed-precision.basic.hlsl");
+}
+TEST_F(FileTest, DecorationRelaxedPrecisionStruct) {
+  runFileTest("decoration.relaxed-precision.struct.hlsl");
+}
+TEST_F(FileTest, DecorationRelaxedPrecisionImage) {
+  runFileTest("decoration.relaxed-precision.image.hlsl");
+}
+
 } // namespace

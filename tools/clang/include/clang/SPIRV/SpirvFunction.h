@@ -69,6 +69,11 @@ public:
   // Returns the result-id of the OpTypeFunction
   uint32_t getFunctionTypeId() const { return fnTypeId; }
 
+  // Store that the return type is at relaxed precision.
+  void setRelaxedPrecision() { relaxedPrecision = true; }
+  // Returns whether the return type has relaxed precision.
+  uint32_t isRelaxedPrecision() const { return relaxedPrecision; }
+
   void setSourceLocation(SourceLocation loc) { functionLoc = loc; }
   SourceLocation getSourceLocation() const { return functionLoc; }
 
@@ -96,8 +101,9 @@ private:
   SpirvType *returnType;  ///< The lowered return type
   uint32_t returnTypeId;  ///< result-id for the return type
 
-  SpirvType *fnType; ///< The SPIR-V function type
-  uint32_t fnTypeId; ///< result-id for the SPIR-V function type
+  SpirvType *fnType;     ///< The SPIR-V function type
+  uint32_t fnTypeId;     ///< result-id for the SPIR-V function type
+  bool relaxedPrecision; ///< Whether the return type is at relaxed precision
 
   /// Legalization-specific code
   ///

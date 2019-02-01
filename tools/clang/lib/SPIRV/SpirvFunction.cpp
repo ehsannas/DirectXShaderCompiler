@@ -19,7 +19,8 @@ SpirvFunction::SpirvFunction(QualType returnType, SpirvType *functionType,
                              SourceLocation loc, llvm::StringRef name)
     : functionId(0), astReturnType(returnType), returnType(nullptr),
       returnTypeId(0), fnType(functionType), fnTypeId(0),
-      functionControl(control), functionLoc(loc), functionName(name) {}
+      relaxedPrecision(false), functionControl(control), functionLoc(loc),
+      functionName(name) {}
 
 bool SpirvFunction::invokeVisitor(Visitor *visitor, bool reverseOrder) {
   if (!visitor->visit(this, Visitor::Phase::Init))
