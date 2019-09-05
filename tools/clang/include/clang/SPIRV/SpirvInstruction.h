@@ -161,7 +161,7 @@ public:
   void setRelaxedPrecision() { isRelaxedPrecision_ = true; }
   bool isRelaxedPrecision() const { return isRelaxedPrecision_; }
 
-  void setNonUniform(bool nu = true) { isNonUniform_ = nu; }
+  virtual void setNonUniform(bool nu = true) { isNonUniform_ = nu; }
   bool isNonUniform() const { return isNonUniform_; }
 
   void setPrecise(bool p = true) { isPrecise_ = p; }
@@ -786,6 +786,11 @@ public:
   }
   spv::MemorySemanticsMask getMemorySemanticsUnequal() const {
     return memorySemanticUnequal;
+  }
+  virtual void setNonUniform(bool nu = true) override {
+    isNonUniform_ = nu;
+    if (pointer)
+      pointer->setNonUniform(nu);
   }
 
 private:
@@ -1502,6 +1507,12 @@ public:
     return memoryAccess.getValue();
   }
 
+  virtual void setNonUniform(bool nu = true) override {
+    isNonUniform_ = nu;
+    if (pointer)
+      pointer->setNonUniform(nu);
+  }
+
 private:
   SpirvInstruction *pointer;
   llvm::Optional<spv::MemoryAccessMask> memoryAccess;
@@ -1618,6 +1629,12 @@ public:
   bool hasMemoryAccessSemantics() const { return memoryAccess.hasValue(); }
   spv::MemoryAccessMask getMemoryAccess() const {
     return memoryAccess.getValue();
+  }
+
+  virtual void setNonUniform(bool nu = true) override {
+    isNonUniform_ = nu;
+    if (pointer)
+      pointer->setNonUniform(nu);
   }
 
 private:
