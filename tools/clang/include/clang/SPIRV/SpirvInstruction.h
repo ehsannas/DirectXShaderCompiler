@@ -117,6 +117,7 @@ public:
     IK_VectorShuffle,             // OpVectorShuffle
     IK_ArrayLength,               // OpArrayLength
     IK_RayTracingOpNV,            // NV raytracing ops
+    IK_CopyObject,                // OpCopyObject
   };
 
   virtual ~SpirvInstruction() = default;
@@ -1516,6 +1517,32 @@ public:
 private:
   SpirvInstruction *pointer;
   llvm::Optional<spv::MemoryAccessMask> memoryAccess;
+};
+
+/// \brief OpCopyObject instruction
+class SpirvCopyObject : public SpirvInstruction {
+public:
+  SpirvCopyObject(QualType resultType, SourceLocation loc,
+                  SpirvInstruction *pointer);
+
+  // For LLVM-style RTTI
+  static bool classof(const SpirvInstruction *inst) {
+    return inst->getKind() == IK_CopyObject;
+  }
+
+  bool invokeVisitor(Visitor *v) override;
+
+  SpirvInstruction *getPointer() const { return pointer; }
+
+  virtual void setNonUniform(bool nu = true) override {
+    isNonUniform_ = nu;
+    if (pointer) {
+      pointer->setNonUniform(nu);
+    }
+  }
+
+private:
+  SpirvInstruction *pointer;
 };
 
 /// \brief OpSampledImage instruction

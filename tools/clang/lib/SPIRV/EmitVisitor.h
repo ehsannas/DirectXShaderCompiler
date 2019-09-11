@@ -246,6 +246,7 @@ public:
   bool visit(SpirvImageSparseTexelsResident *);
   bool visit(SpirvImageTexelPointer *);
   bool visit(SpirvLoad *);
+  bool visit(SpirvCopyObject *);
   bool visit(SpirvSampledImage *);
   bool visit(SpirvSelect *);
   bool visit(SpirvSpecConstantBinaryOp *);

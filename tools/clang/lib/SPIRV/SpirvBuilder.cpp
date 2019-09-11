@@ -177,6 +177,19 @@ SpirvLoad *SpirvBuilder::createLoad(QualType resultType,
   return instruction;
 }
 
+SpirvCopyObject *SpirvBuilder::createCopyObject(QualType resultType,
+                                                SpirvInstruction *pointer,
+                                                SourceLocation loc) {
+  assert(insertPoint && "null insert point");
+  auto *instruction = new (context) SpirvCopyObject(resultType, loc, pointer);
+  instruction->setStorageClass(pointer->getStorageClass());
+  instruction->setLayoutRule(pointer->getLayoutRule());
+  instruction->setNonUniform(pointer->isNonUniform());
+  instruction->setRValue(pointer->isRValue());
+  insertPoint->addInstruction(instruction);
+  return instruction;
+}
+
 SpirvLoad *SpirvBuilder::createLoad(const SpirvType *resultType,
                                     SpirvInstruction *pointer,
                                     SourceLocation loc) {
@@ -328,6 +341,7 @@ SpirvAtomic *SpirvBuilder::createAtomicOp(
   auto *instruction =
       new (context) SpirvAtomic(opcode, resultType, loc, originalValuePtr,
                                 scope, memorySemantics, valueToOp);
+  instruction->setNonUniform(originalValuePtr->isNonUniform());
   insertPoint->addInstruction(instruction);
   return instruction;
 }
@@ -343,6 +357,7 @@ SpirvAtomic *SpirvBuilder::createAtomicCompareExchange(
       SpirvAtomic(spv::Op::OpAtomicCompareExchange, resultType, loc,
                   originalValuePtr, scope, equalMemorySemantics,
                   unequalMemorySemantics, valueToOp, comparator);
+  instruction->setNonUniform(originalValuePtr->isNonUniform());
   insertPoint->addInstruction(instruction);
   return instruction;
 }
