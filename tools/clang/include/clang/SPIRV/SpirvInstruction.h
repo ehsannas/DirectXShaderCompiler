@@ -161,7 +161,7 @@ public:
   void setRelaxedPrecision() { isRelaxedPrecision_ = true; }
   bool isRelaxedPrecision() const { return isRelaxedPrecision_; }
 
-  void setNonUniform(bool nu = true) { isNonUniform_ = nu; }
+  virtual void setNonUniform(bool nu = true) { isNonUniform_ = nu; }
   bool isNonUniform() const { return isNonUniform_; }
 
   void setPrecise(bool p = true) { isPrecise_ = p; }
@@ -730,6 +730,18 @@ public:
   SpirvInstruction *getBase() const { return base; }
   llvm::ArrayRef<SpirvInstruction *> getIndexes() const { return indices; }
 
+  void setNonUniform(bool nu = true) {
+    isNonUniform_ = nu;
+    // If indexing into an array,runtimearray,structured buffer, etc. the
+    // indices should be non-uniform. Also if the base of the access chain is
+    // another access chain, this should also apply to the indices of the base
+    // access chain.
+    for (auto *index : indices)
+      index->setNonUniform(nu);
+    if (auto *baseChain = dyn_cast<SpirvAccessChain>(base))
+      baseChain->setNonUniform(nu);
+  }
+
 private:
   SpirvInstruction *base;
   llvm::SmallVector<SpirvInstruction *, 4> indices;
@@ -902,6 +914,12 @@ public:
   SpirvInstruction *getOperand2() const { return operand2; }
   bool isSpecConstantOp() const {
     return getopcode() == spv::Op::OpSpecConstantOp;
+  }
+
+  void setNonUniform(bool nu = true) {
+    isNonUniform_ = nu;
+    operand1->setNonUniform(nu);
+    operand2->setNonUniform(nu);
   }
 
 private:
@@ -1502,6 +1520,14 @@ public:
     return memoryAccess.getValue();
   }
 
+  void setNonUniform(bool nu = true) {
+    isNonUniform_ = nu;
+    // If indexing into an array,runtimearray,structured buffer, etc. the index
+    // itself is non-uniform.
+    if (isa<SpirvAccessChain>(pointer))
+      pointer->setNonUniform(nu);
+  }
+
 private:
   SpirvInstruction *pointer;
   llvm::Optional<spv::MemoryAccessMask> memoryAccess;
@@ -1678,6 +1704,11 @@ public:
 
   SpirvInstruction *getOperand() const { return operand; }
   bool isConversionOp() const;
+
+  void setNonUniform(bool nu = true) {
+    isNonUniform_ = nu;
+    operand->setNonUniform(nu);
+  }
 
 private:
   SpirvInstruction *operand;

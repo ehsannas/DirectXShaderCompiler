@@ -1112,6 +1112,9 @@ TEST_F(FileTest, IntrinsicsGetRenderTargetSamplePosition) {
 TEST_F(FileTest, IntrinsicsNonUniformResourceIndex) {
   runFileTest("intrinsics.non-uniform-resource-index.hlsl");
 }
+TEST_F(FileTest, IntrinsicsNonUniformResourceIndex2) {
+  runFileTest("intrinsics.non-uniform-resource-index2.hlsl");
+}
 
 // For attributes
 TEST_F(FileTest, AttributeEarlyDepthStencil) {

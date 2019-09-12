@@ -1,7 +1,7 @@
 // Run: %dxc -T ps_6_0 -E main
 
-// CHECK: OpCapability RuntimeDescriptorArrayEXT
 // CHECK: OpCapability ShaderNonUniformEXT
+// CHECK: OpCapability RuntimeDescriptorArrayEXT
 // CHECK: OpCapability SampledImageArrayNonUniformIndexingEXT
 // CHECK: OpCapability StorageImageArrayNonUniformIndexingEXT
 // CHECK: OpCapability UniformTexelBufferArrayNonUniformIndexingEXT
@@ -74,49 +74,52 @@ float4 main(uint index : A, float2 loc : B, int2 offset : C) : SV_Target {
 // CHECK: [[nu1]] = OpLoad %uint %index
 // CHECK: [[nu2]] = OpAccessChain %_ptr_UniformConstant_type_2d_image %gTextures [[nu1]]
 // CHECK: [[nu3]] = OpLoad %type_2d_image
-// CHECK: [[nu4]] = OpIAdd %uint {{%\d+}} %uint_1
-// CHECK: [[nu5]] = OpAccessChain %_ptr_UniformConstant_type_sampler %gSamplers [[nu4]]
-// CHECK: [[nu6]] = OpLoad %type_sampler
-// CHECK: [[nu7]] = OpSampledImage %type_sampled_image
+// CHECK: [[nu4]] = OpLoad %uint %index
+// CHECK: [[nu5]] = OpIAdd %uint {{%\d+}} %uint_1
+// CHECK: [[nu6]] = OpAccessChain %_ptr_UniformConstant_type_sampler %gSamplers [[nu5]]
+// CHECK: [[nu7]] = OpLoad %type_sampler
+// CHECK: [[nu8]] = OpSampledImage %type_sampled_image
 // CHECK:           OpImageSampleImplicitLod
     float4 v1 = gTextures[NonUniformResourceIndex(index)].Sample(
         gSamplers[NonUniformResourceIndex(index + 1)], loc);
 
-// CHECK:  [[nu8]] = OpLoad %uint %index
+// CHECK:  [[nu9]] = OpLoad %uint %index
 // CHECK:            OpIAdd %uint {{%\d+}} %uint_1
-// CHECK:  [[nu9]] = OpAccessChain %_ptr_UniformConstant_type_sampler %gSamplers [[nu8]]
-// CHECK: [[nu10]] = OpLoad %type_sampler
-// CHECK: [[nu11]] = OpSampledImage %type_sampled_image
+// CHECK: [[nu10]] = OpAccessChain %_ptr_UniformConstant_type_sampler %gSamplers [[nu9]]
+// CHECK: [[nu11]] = OpLoad %type_sampler
+// CHECK: [[nu12]] = OpSampledImage %type_sampled_image
 // CHECK:            OpImageSampleImplicitLod
     float4 v2 = gTextures[0].Sample(
         gSamplers[NonUniformResourceIndex(index++)], loc);
 
 // CHECK:            OpLoad %uint %index
 // CHECK:            OpISub %uint {{%\d+}} %uint_1
-// CHECK: [[nu12]] = OpLoad %uint %index
-// CHECK: [[nu13]] = OpAccessChain %_ptr_UniformConstant_type_2d_image %gTextures [[nu12]]
-// CHECK: [[nu14]] = OpLoad %type_2d_image
-// CHECK: [[nu15]] = OpSampledImage %type_sampled_image
+// CHECK: [[nu13]] = OpLoad %uint %index
+// CHECK: [[nu14]] = OpAccessChain %_ptr_UniformConstant_type_2d_image %gTextures [[nu13]]
+// CHECK: [[nu15]] = OpLoad %type_2d_image
+// CHECK: [[nu16]] = OpSampledImage %type_sampled_image
 // CHECK:            OpImageSampleImplicitLod
     float4 v3 = gTextures[NonUniformResourceIndex(--index)].Sample(
         gSamplers[0], loc);
 
-// CHECK: [[nu16]] = OpIMul %uint
-// CHECK: [[nu17]] = OpAccessChain %_ptr_UniformConstant_type_2d_image_0 %gRWTextures [[nu16]]
-// CHECK: [[nu18]] = OpLoad %type_2d_image_0
+// CHECK: [[nu17]] = OpLoad %uint %index
+// CHECK: [[nu18]] = OpLoad %uint %index
+// CHECK: [[nu19]] = OpIMul %uint [[nu17]] [[nu18]]
+// CHECK: [[nu20]] = OpAccessChain %_ptr_UniformConstant_type_2d_image_0 %gRWTextures [[nu19]]
+// CHECK: [[nu21]] = OpLoad %type_2d_image_0
 // CHECK:            OpImageRead
     float4 v4 = gRWTextures[NonUniformResourceIndex(index * index)].Load(loc);
 
-// CHECK: [[nu19]] = OpLoad %uint %index
-// CHECK: [[nu20]] = OpUMod %uint [[nu19]] %uint_3
-// CHECK: [[nu21]] = OpAccessChain %_ptr_UniformConstant_type_2d_image_0 %gRWTextures [[nu20]]
-// CHECK: [[nu22]] = OpLoad %type_2d_image_0
+// CHECK: [[nu22]] = OpLoad %uint %index
+// CHECK: [[nu23]] = OpUMod %uint [[nu22]] %uint_3
+// CHECK: [[nu24]] = OpAccessChain %_ptr_UniformConstant_type_2d_image_0 %gRWTextures [[nu23]]
+// CHECK: [[nu25]] = OpLoad %type_2d_image_0
 // CHECK:            OpImageWrite
     gRWTextures[NonUniformResourceIndex(index) % 3][loc] = 4;
 
 // CHECK: [[nu23]] = OpLoad %uint %index
-// CHECK:            OpLoad %uint %index
-// CHECK: [[nu24]] = OpIMul %uint [[nu23]] {{%\d+}}
+// CHECK: [[nu24]] = OpLoad %uint %index
+// CHECK: [[nu24]] = OpIMul %uint [[nu23]] [[nu24]]
 // CHECK: [[nu25]] = OpAccessChain %_ptr_UniformConstant_type_buffer_image %gBuffers [[nu24]]
 // CHECK: [[nu26]] = OpLoad %type_buffer_image
 // CHECK:            OpImageFetch
