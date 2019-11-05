@@ -766,6 +766,14 @@ SpirvBuilder::createRayTracingOpsNV(spv::Op opcode, QualType resultType,
   return inst;
 }
 
+SpirvInstruction *
+SpirvBuilder::createDemoteToHelperInvocationEXT(SourceLocation loc) {
+  assert(insertPoint && "null insert point");
+  auto *inst = new (context) SpirvDemoteToHelperInvocationEXT(loc);
+  insertPoint->addInstruction(inst);
+  return inst;
+}
+
 void SpirvBuilder::addModuleProcessed(llvm::StringRef process) {
   module->addModuleProcessed(new (context) SpirvModuleProcessed({}, process));
 }

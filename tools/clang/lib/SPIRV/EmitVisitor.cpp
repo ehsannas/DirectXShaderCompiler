@@ -1105,6 +1105,12 @@ bool EmitVisitor::visit(SpirvRayTracingOpNV *inst) {
   return true;
 }
 
+bool EmitVisitor::visit(SpirvDemoteToHelperInvocationEXT *inst) {
+  initInstruction(inst);
+  finalizeInstruction();
+  return true;
+}
+
 // EmitTypeHandler ------
 
 void EmitTypeHandler::initTypeInstruction(spv::Op op) {
