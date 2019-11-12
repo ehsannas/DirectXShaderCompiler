@@ -324,6 +324,16 @@ void [[]] DispatchMesh(in uint threadGroupCountX, in uint threadGroupCountY, in 
 // HL Op for allocating ray query object that default constructor uses
 uint [[hidden]] AllocateRayQuery(in uint flags);
 
+// SPIRV Change Starts
+u64 [[]] VkReadClock(in uint scope);
+uint [[]] VkCrossDeviceScope();
+uint [[]] VkDeviceScope();
+uint [[]] VkWorkgroupScope();
+uint [[]] VkSubgroupScope();
+uint [[]] VkInvocationScope();
+uint [[]] VkQueueFamilyScope();
+// SPIRV Change Ends
+
 } namespace
 
 namespace StreamMethods {

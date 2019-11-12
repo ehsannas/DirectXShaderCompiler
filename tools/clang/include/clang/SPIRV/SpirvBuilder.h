@@ -411,6 +411,9 @@ public:
                         llvm::ArrayRef<SpirvInstruction *> operands,
                         SourceLocation loc);
 
+  /// \brief Creates an OpReadClockKHR instruction.
+  SpirvInstruction *createReadClock(SpirvInstruction *scope, SourceLocation);
+
   // === SPIR-V Module Structure ===
   inline void setMemoryModel(spv::AddressingModel, spv::MemoryModel);
 

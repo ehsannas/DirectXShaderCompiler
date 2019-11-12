@@ -118,6 +118,7 @@ Extension FeatureManager::getExtensionSymbol(llvm::StringRef name) {
       .Case("SPV_GOOGLE_user_type",
             Extension::GOOGLE_user_type)
       .Case("SPV_KHR_post_depth_coverage", Extension::KHR_post_depth_coverage)
+      .Case("SPV_KHR_shader_clock", Extension::KHR_shader_clock)
       .Case("SPV_NV_ray_tracing", Extension::NV_ray_tracing)
       .Case("SPV_NV_mesh_shader", Extension::NV_mesh_shader)
       .Default(Extension::Unknown);
@@ -137,6 +138,8 @@ const char *FeatureManager::getExtensionName(Extension symbol) {
     return "SPV_KHR_shader_draw_parameters";
   case Extension::KHR_post_depth_coverage:
     return "SPV_KHR_post_depth_coverage";
+  case Extension::KHR_shader_clock:
+    return "SPV_KHR_shader_clock";
   case Extension::EXT_descriptor_indexing:
     return "SPV_EXT_descriptor_indexing";
   case Extension::EXT_fragment_fully_covered:

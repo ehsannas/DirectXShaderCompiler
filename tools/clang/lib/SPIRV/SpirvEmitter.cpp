@@ -6983,6 +6983,33 @@ SpirvEmitter::processIntrinsicCallExpr(const CallExpr *callExpr) {
   case hlsl::IntrinsicOp::IOP_rcp:
     retVal = processIntrinsicRcp(callExpr);
     break;
+  case hlsl::IntrinsicOp::IOP_VkReadClock:
+    retVal = processIntrinsicReadClock(callExpr);
+    break;
+  case hlsl::IntrinsicOp::IOP_VkCrossDeviceScope:
+    retVal =
+        spvBuilder.getConstantInt(astContext.UnsignedIntTy, llvm::APInt(32, 0));
+    break;
+  case hlsl::IntrinsicOp::IOP_VkDeviceScope:
+    retVal =
+        spvBuilder.getConstantInt(astContext.UnsignedIntTy, llvm::APInt(32, 1));
+    break;
+  case hlsl::IntrinsicOp::IOP_VkWorkgroupScope:
+    retVal =
+        spvBuilder.getConstantInt(astContext.UnsignedIntTy, llvm::APInt(32, 2));
+    break;
+  case hlsl::IntrinsicOp::IOP_VkSubgroupScope:
+    retVal =
+        spvBuilder.getConstantInt(astContext.UnsignedIntTy, llvm::APInt(32, 3));
+    break;
+  case hlsl::IntrinsicOp::IOP_VkInvocationScope:
+    retVal =
+        spvBuilder.getConstantInt(astContext.UnsignedIntTy, llvm::APInt(32, 4));
+    break;
+  case hlsl::IntrinsicOp::IOP_VkQueueFamilyScope:
+    retVal =
+        spvBuilder.getConstantInt(astContext.UnsignedIntTy, llvm::APInt(32, 5));
+    break;
   case hlsl::IntrinsicOp::IOP_saturate:
     retVal = processIntrinsicSaturate(callExpr);
     break;
@@ -8813,6 +8840,12 @@ SpirvInstruction *SpirvEmitter::processIntrinsicRcp(const CallExpr *callExpr) {
   // For cases with scalar or vector arguments.
   return spvBuilder.createBinaryOp(spv::Op::OpFDiv, returnType,
                                    getValueOne(argType), argId, loc);
+}
+
+SpirvInstruction *
+SpirvEmitter::processIntrinsicReadClock(const CallExpr *callExpr) {
+  auto *scope = doExpr(callExpr->getArg(0));
+  return spvBuilder.createReadClock(scope, callExpr->getExprLoc());
 }
 
 SpirvInstruction *
