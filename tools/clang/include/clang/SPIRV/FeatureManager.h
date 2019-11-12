@@ -34,6 +34,7 @@ enum class Extension {
   KHR_multiview,
   KHR_shader_draw_parameters,
   KHR_post_depth_coverage,
+  KHR_shader_clock,
   EXT_descriptor_indexing,
   EXT_fragment_fully_covered,
   EXT_fragment_invocation_density,

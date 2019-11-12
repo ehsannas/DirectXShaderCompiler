@@ -81,6 +81,7 @@ DEFINE_INVOKE_VISITOR_FOR_CLASS(SpirvUnaryOp)
 DEFINE_INVOKE_VISITOR_FOR_CLASS(SpirvVectorShuffle)
 DEFINE_INVOKE_VISITOR_FOR_CLASS(SpirvArrayLength)
 DEFINE_INVOKE_VISITOR_FOR_CLASS(SpirvRayTracingOpNV)
+DEFINE_INVOKE_VISITOR_FOR_CLASS(SpirvReadClock)
 
 #undef DEFINE_INVOKE_VISITOR_FOR_CLASS
 
@@ -758,5 +759,11 @@ SpirvRayTracingOpNV::SpirvRayTracingOpNV(
     llvm::ArrayRef<SpirvInstruction *> vecOperands, SourceLocation loc)
     : SpirvInstruction(IK_RayTracingOpNV, opcode, resultType, loc),
       operands(vecOperands.begin(), vecOperands.end()) {}
+
+SpirvReadClock::SpirvReadClock(QualType resultType, SpirvInstruction *s,
+                               SourceLocation loc)
+    : SpirvInstruction(IK_ReadClock, spv::Op::OpReadClockKHR, resultType, loc),
+      scope(s) {}
+
 } // namespace spirv
 } // namespace clang
