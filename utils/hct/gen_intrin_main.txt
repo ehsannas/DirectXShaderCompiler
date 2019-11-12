@@ -326,6 +326,21 @@ uint [[hidden]] AllocateRayQuery(in uint flags);
 
 } namespace
 
+
+// SPIRV Change Starts
+namespace VkIntrinsics {
+
+u64 [[]] ReadClock(in uint scope);
+uint [[]] CrossDeviceScope();
+uint [[]] DeviceScope();
+uint [[]] WorkgroupScope();
+uint [[]] SubgroupScope();
+uint [[]] InvocationScope();
+uint [[]] QueueFamilyScope();
+
+} namespace
+// SPIRV Change Ends
+
 namespace StreamMethods {
 
 void [[]] Append(in $match<-1, 1> void x) : stream_append;

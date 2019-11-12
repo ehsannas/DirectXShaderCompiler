@@ -222,6 +222,27 @@ import hctdb_instrhelp
   IOP_texCUBEproj,
   IOP_transpose,
   IOP_trunc,
+#ifdef ENABLE_SPIRV_CODEGEN
+  IOP_VkCrossDeviceScope,
+#endif // ENABLE_SPIRV_CODEGEN
+#ifdef ENABLE_SPIRV_CODEGEN
+  IOP_VkDeviceScope,
+#endif // ENABLE_SPIRV_CODEGEN
+#ifdef ENABLE_SPIRV_CODEGEN
+  IOP_VkInvocationScope,
+#endif // ENABLE_SPIRV_CODEGEN
+#ifdef ENABLE_SPIRV_CODEGEN
+  IOP_VkQueueFamilyScope,
+#endif // ENABLE_SPIRV_CODEGEN
+#ifdef ENABLE_SPIRV_CODEGEN
+  IOP_VkReadClock,
+#endif // ENABLE_SPIRV_CODEGEN
+#ifdef ENABLE_SPIRV_CODEGEN
+  IOP_VkSubgroupScope,
+#endif // ENABLE_SPIRV_CODEGEN
+#ifdef ENABLE_SPIRV_CODEGEN
+  IOP_VkWorkgroupScope,
+#endif // ENABLE_SPIRV_CODEGEN
   MOP_Append,
   MOP_RestartStrip,
   MOP_CalculateLevelOfDetail,

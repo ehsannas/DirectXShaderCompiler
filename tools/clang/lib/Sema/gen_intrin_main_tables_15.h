@@ -1710,6 +1710,61 @@ static const HLSL_INTRINSIC g_Intrinsics[] =
 };
 
 //
+// Start of VkIntrinsics
+//
+
+#ifdef ENABLE_SPIRV_CODEGEN
+
+static const HLSL_INTRINSIC_ARGUMENT g_VkIntrinsics_Args0[] =
+{
+    {"CrossDeviceScope", AR_QUAL_OUT, 0, LITEMPLATE_SCALAR, 0, LICOMPTYPE_UINT, 1, 1},
+};
+
+static const HLSL_INTRINSIC_ARGUMENT g_VkIntrinsics_Args1[] =
+{
+    {"DeviceScope", AR_QUAL_OUT, 0, LITEMPLATE_SCALAR, 0, LICOMPTYPE_UINT, 1, 1},
+};
+
+static const HLSL_INTRINSIC_ARGUMENT g_VkIntrinsics_Args2[] =
+{
+    {"InvocationScope", AR_QUAL_OUT, 0, LITEMPLATE_SCALAR, 0, LICOMPTYPE_UINT, 1, 1},
+};
+
+static const HLSL_INTRINSIC_ARGUMENT g_VkIntrinsics_Args3[] =
+{
+    {"QueueFamilyScope", AR_QUAL_OUT, 0, LITEMPLATE_SCALAR, 0, LICOMPTYPE_UINT, 1, 1},
+};
+
+static const HLSL_INTRINSIC_ARGUMENT g_VkIntrinsics_Args4[] =
+{
+    {"ReadClock", AR_QUAL_OUT, 0, LITEMPLATE_SCALAR, 0, LICOMPTYPE_UINT64, 1, 1},
+    {"scope", AR_QUAL_IN, 1, LITEMPLATE_SCALAR, 1, LICOMPTYPE_UINT, 1, 1},
+};
+
+static const HLSL_INTRINSIC_ARGUMENT g_VkIntrinsics_Args5[] =
+{
+    {"SubgroupScope", AR_QUAL_OUT, 0, LITEMPLATE_SCALAR, 0, LICOMPTYPE_UINT, 1, 1},
+};
+
+static const HLSL_INTRINSIC_ARGUMENT g_VkIntrinsics_Args6[] =
+{
+    {"WorkgroupScope", AR_QUAL_OUT, 0, LITEMPLATE_SCALAR, 0, LICOMPTYPE_UINT, 1, 1},
+};
+
+static const HLSL_INTRINSIC g_VkIntrinsics[] =
+{
+    {(UINT)hlsl::IntrinsicOp::IOP_VkCrossDeviceScope, false, false, -1, 1, g_VkIntrinsics_Args0},
+    {(UINT)hlsl::IntrinsicOp::IOP_VkDeviceScope, false, false, -1, 1, g_VkIntrinsics_Args1},
+    {(UINT)hlsl::IntrinsicOp::IOP_VkInvocationScope, false, false, -1, 1, g_VkIntrinsics_Args2},
+    {(UINT)hlsl::IntrinsicOp::IOP_VkQueueFamilyScope, false, false, -1, 1, g_VkIntrinsics_Args3},
+    {(UINT)hlsl::IntrinsicOp::IOP_VkReadClock, false, false, -1, 2, g_VkIntrinsics_Args4},
+    {(UINT)hlsl::IntrinsicOp::IOP_VkSubgroupScope, false, false, -1, 1, g_VkIntrinsics_Args5},
+    {(UINT)hlsl::IntrinsicOp::IOP_VkWorkgroupScope, false, false, -1, 1, g_VkIntrinsics_Args6},
+};
+
+#endif // ENABLE_SPIRV_CODEGEN
+
+//
 // Start of StreamMethods
 //
 
@@ -6300,6 +6355,7 @@ static const UINT g_uTexture2DMethodsCount = 77;
 static const UINT g_uTexture3DMethodsCount = 24;
 static const UINT g_uTextureCUBEArrayMethodsCount = 42;
 static const UINT g_uTextureCUBEMethodsCount = 42;
+static const UINT g_uVkIntrinsicsCount = 7;
 static const UINT g_uVkSubpassInputMSMethodsCount = 1;
 static const UINT g_uVkSubpassInputMethodsCount = 1;
 

@@ -117,6 +117,7 @@ public:
     IK_VectorShuffle,             // OpVectorShuffle
     IK_ArrayLength,               // OpArrayLength
     IK_RayTracingOpNV,            // NV raytracing ops
+    IK_ReadClock,                 // OpReadClock
   };
 
   virtual ~SpirvInstruction() = default;
@@ -1748,6 +1749,23 @@ public:
 
 private:
   llvm::SmallVector<SpirvInstruction *, 4> operands;
+};
+
+class SpirvReadClock : public SpirvInstruction {
+public:
+  SpirvReadClock(QualType resultType, SpirvInstruction *scope, SourceLocation);
+
+  // For LLVM-style RTTI
+  static bool classof(const SpirvInstruction *inst) {
+    return inst->getKind() == IK_ReadClock;
+  }
+
+  bool invokeVisitor(Visitor *v) override;
+
+  SpirvInstruction *getScope() const { return scope; }
+
+private:
+  SpirvInstruction *scope;
 };
 
 #undef DECLARE_INVOKE_VISITOR_FOR_CLASS
