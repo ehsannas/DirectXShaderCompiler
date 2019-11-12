@@ -261,6 +261,7 @@ public:
   bool visit(SpirvRayTracingOpNV *) override;
   bool visit(SpirvDemoteToHelperInvocationEXT *) override;
   bool visit(SpirvRayQueryOpKHR *) override;
+  bool visit(SpirvReadClock *);
 
   using Visitor::visit;
 

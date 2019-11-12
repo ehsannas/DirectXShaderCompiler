@@ -35,6 +35,7 @@ public:
   bool visit(SpirvExtInstImport *) override;
   bool visit(SpirvExtInst *) override;
   bool visit(SpirvDemoteToHelperInvocationEXT *) override;
+  bool visit(SpirvReadClock *);
 
   using Visitor::visit;
 

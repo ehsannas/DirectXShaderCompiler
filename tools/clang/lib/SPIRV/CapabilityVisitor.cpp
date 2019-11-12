@@ -586,5 +586,13 @@ bool CapabilityVisitor::visit(SpirvDemoteToHelperInvocationEXT *inst) {
   return true;
 }
 
+bool CapabilityVisitor::visit(SpirvReadClock *inst) {
+  auto loc = inst->getSourceLocation();
+  addCapabilityForType(inst->getResultType(), loc, inst->getStorageClass());
+  addCapability(spv::Capability::ShaderClockKHR, loc);
+  addExtension(Extension::KHR_shader_clock, "ReadClock", loc);
+  return true;
+}
+
 } // end namespace spirv
 } // end namespace clang
