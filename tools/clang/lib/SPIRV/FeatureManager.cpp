@@ -101,6 +101,7 @@ Extension FeatureManager::getExtensionSymbol(llvm::StringRef name) {
       .Case("SPV_KHR_16bit_storage", Extension::KHR_16bit_storage)
       .Case("SPV_KHR_device_group", Extension::KHR_device_group)
       .Case("SPV_KHR_multiview", Extension::KHR_multiview)
+      .Case("SPV_KHR_non_semantic_info", Extension::KHR_non_semantic_info)
       .Case("SPV_KHR_shader_draw_parameters",
             Extension::KHR_shader_draw_parameters)
       .Case("SPV_EXT_descriptor_indexing", Extension::EXT_descriptor_indexing)
@@ -118,8 +119,7 @@ Extension FeatureManager::getExtensionSymbol(llvm::StringRef name) {
             Extension::AMD_shader_explicit_vertex_parameter)
       .Case("SPV_GOOGLE_hlsl_functionality1",
             Extension::GOOGLE_hlsl_functionality1)
-      .Case("SPV_GOOGLE_user_type",
-            Extension::GOOGLE_user_type)
+      .Case("SPV_GOOGLE_user_type", Extension::GOOGLE_user_type)
       .Case("SPV_KHR_post_depth_coverage", Extension::KHR_post_depth_coverage)
       .Case("SPV_NV_ray_tracing", Extension::NV_ray_tracing)
       .Case("SPV_NV_mesh_shader", Extension::NV_mesh_shader)
@@ -136,6 +136,8 @@ const char *FeatureManager::getExtensionName(Extension symbol) {
     return "SPV_KHR_device_group";
   case Extension::KHR_multiview:
     return "SPV_KHR_multiview";
+  case Extension::KHR_non_semantic_info:
+    return "SPV_KHR_non_semantic_info";
   case Extension::KHR_shader_draw_parameters:
     return "SPV_KHR_shader_draw_parameters";
   case Extension::KHR_post_depth_coverage:
