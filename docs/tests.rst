@@ -8,5 +8,5 @@ In addition to the open-source tests, DXC's SPIR-V backend goes through addition
 +------------------------------------------+--------------------------------------------------------------------------------------------------------------+--------------+
 | Commit Hash                              | Link to the commit                                                                                           | Test Results |
 +==========================================+==============================================================================================================+==============+
-| a5365731f0e1ce961fd1f155eb25ff3343ed5e2b | [commit](https://github.com/microsoft/DirectXShaderCompiler/commit/a5365731f0e1ce961fd1f155eb25ff3343ed5e2b) |     PASS     |
+| a5365731f0e1ce961fd1f155eb25ff3343ed5e2b | `commit <https://github.com/microsoft/DirectXShaderCompiler/commit/a5365731f0e1ce961fd1f155eb25ff3343ed5e2b>`_ |     PASS     |
 +------------------------------------------+--------------------------------------------------------------------------------------------------------------+--------------+
