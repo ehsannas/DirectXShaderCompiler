@@ -111,3 +111,14 @@ See [LICENSE.txt](LICENSE.TXT) and [ThirdPartyNotices.txt](ThirdPartyNotices.txt
 ## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+
+## Known-good hashes
+
+In addition to the open-source tests, DXC's SPIR-V backend goes through additional tests which are not publicly available. The following table shows the PASS/FAIL result of these tests. The tests are not run on every commit, rather they are run on a daily basis. Therefore the table does not contain all commit hashes.
+
+Commit | Hash | Link to the commit | Test Results
+--- | --- | ---
+a5365731f0e1ce961fd1f155eb25ff3343ed5e2b | [commit](https://github.com/microsoft/DirectXShaderCompiler/commit/a5365731f0e1ce961fd1f155eb25ff3343ed5e2b) | PASS
+
+
