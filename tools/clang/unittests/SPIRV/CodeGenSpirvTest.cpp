@@ -1789,6 +1789,16 @@ TEST_F(FileTest, BindingStructureOfResources4) {
               /*runValidation*/ false);
 }
 
+TEST_F(FileTest, BindingStructureOfResourcesOptimized) {
+  // In Vulkan, OpTypeStruct must not contain an opaque type. After optimization
+  // is performed, this binary should pass validation.
+  runFileTest("vk.binding.global-struct-of-resources.optimized.hlsl",
+              Expect::Success,
+              // This is still failing validation because spirv-opt is leaving
+              // behind illegal types (struct of opaques)
+              /*runValidation*/ false);
+}
+
 TEST_F(FileTest, BindingStructureOfResourcesAndNonResourcesError1) {
   runFileTest("vk.binding.global-struct-of-resource-mix.error.1.hlsl",
               Expect::Failure, /*runValidation*/ false);
