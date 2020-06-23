@@ -1789,6 +1789,12 @@ TEST_F(FileTest, BindingStructureOfResources4) {
               /*runValidation*/ false);
 }
 
+TEST_F(FileTest, BindingStructureOfResourcesOptimized) {
+  // After optimization is performed, this binary should pass validation.
+  runFileTest("vk.binding.global-struct-of-resources.optimized.hlsl",
+              Expect::Success, /*runValidation*/ true);
+}
+
 TEST_F(FileTest, BindingStructureOfResourcesAndNonResourcesError1) {
   runFileTest("vk.binding.global-struct-of-resource-mix.error.1.hlsl",
               Expect::Failure, /*runValidation*/ false);
