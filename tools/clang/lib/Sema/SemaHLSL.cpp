@@ -3260,6 +3260,30 @@ private:
       return -1;
   }
 
+  // Adds intrinsic function declarations to the "vk" namespace.
+  void AddVkIntrinsicFunctions() {
+    auto &context = m_sema->getASTContext();
+    auto *vkNS = m_sema->getOrCreateVkNamespace();
+    for (uint32_t i = 0; i < _countof(g_Intrinsics); ++i) {
+      const HLSL_INTRINSIC *intrinsic = &g_Intrinsics[i];
+      auto name = std::string(intrinsic->pArgs->pName);
+      if (name.substr(0, 2) == "Vk") {
+        printf("found intrinsic: %s\n", name.c_str());
+        const IdentifierInfo &fnII =
+            context.Idents.get(name.substr(2), tok::TokenKind::identifier);
+        DeclarationName functionName(&fnII);
+        FunctionDecl *functionDecl = FunctionDecl::Create(
+            context, vkNS, NoLoc, DeclarationNameInfo(functionName, NoLoc),
+            /*functionType*/ {}, nullptr, StorageClass::SC_Extern,
+            InlineSpecifiedFalse, HasWrittenPrototypeTrue);
+        vkNS->addDecl(functionDecl);
+        functionDecl->setLexicalDeclContext(vkNS);
+        functionDecl->setDeclContext(vkNS);
+        functionDecl->setImplicit(true);
+      }
+    }
+  }
+
   // Adds all built-in HLSL object types.
   void AddObjectTypes()
   {
@@ -3454,6 +3478,7 @@ public:
     for (auto && intrinsic : m_intrinsicTables) {
       AddIntrinsicTableMethods(intrinsic);
     }
+    AddVkIntrinsicFunctions();
   }
 
   void ForgetSema() override
@@ -3605,6 +3630,12 @@ public:
     // back out.
     if (this->m_sema->Diags.hasFatalErrorOccurred()) {
       return false;
+    }
+
+    // Looking for the implicit "vk" namespace.
+    if (idInfo->getName().equals("vk")) {
+      R.addDecl(getSema()->getOrCreateVkNamespace());
+      return true;
     }
 
     StringRef nameIdentifier = idInfo->getName();
@@ -4177,9 +4208,16 @@ public:
   {
     DXASSERT_NOMSG(ULE != nullptr);
 
+    bool isVkNamespace =
+        ULE->getQualifier() &&
+        ULE->getQualifier()->getKind() == NestedNameSpecifier::Namespace &&
+        ULE->getQualifier()->getAsNamespace()->getName() == "vk";
+
     // Intrinsics live in the global namespace, so references to their names
     // should be either unqualified or '::'-prefixed.
-    if (ULE->getQualifier() && ULE->getQualifier()->getKind() != NestedNameSpecifier::Global) {
+    // Exception: Vulkan-specific intrinsics live in the 'vk::' namespace.
+    if (!isVkNamespace && ULE->getQualifier() &&
+        ULE->getQualifier()->getKind() != NestedNameSpecifier::Global) {
       return false;
     }
 
@@ -4190,7 +4228,10 @@ public:
       return false;
     }
 
-    StringRef nameIdentifier = idInfo->getName();
+    std::string nameIdentifier = idInfo->getName().str();
+    if(isVkNamespace) {
+      nameIdentifier = "Vk" + nameIdentifier;
+    }
 
     IntrinsicDefIter cursor = FindIntrinsicByNameAndArgCount(
       g_Intrinsics, _countof(g_Intrinsics), StringRef(), nameIdentifier, Args.size());
@@ -4222,6 +4263,7 @@ public:
       if (insertedNewValue)
       {
         DXASSERT(tableName, "otherwise IDxcIntrinsicTable::GetTableName() failed");
+        // Maybe we should create the vk namespace in SemaHLSL and then use m_VkNSDecl here instead:
         intrinsicFuncDecl = AddHLSLIntrinsicFunction(*m_context, m_hlslNSDecl, tableName, lowering, pIntrinsic, functionArgTypes, functionArgTypeCount);
         insertResult.first->setFunctionDecl(intrinsicFuncDecl);
       }

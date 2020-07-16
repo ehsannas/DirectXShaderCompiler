@@ -699,6 +699,9 @@ public:
   /// \brief The C++ "std" namespace, where the standard library resides.
   LazyDeclPtr StdNamespace;
 
+  /// \brief The HLSL "vk" namespace, where Vulkan-specific methods reside.
+  LazyDeclPtr VkNamespace;
+
   /// \brief The C++ "std::bad_alloc" class, which is defined by the C++
   /// standard library.
   LazyDeclPtr StdBadAlloc;
@@ -4071,6 +4074,8 @@ public:
   bool IsOnHLSLBufferView();
   Decl *ActOnHLSLBufferView(Scope *bufferScope, SourceLocation KwLoc,
                         DeclGroupPtrTy &dcl, bool iscbuf);
+  NamespaceDecl *getVkNamespace() const;
+  NamespaceDecl *getOrCreateVkNamespace();
   // HLSL Change Ends
 
   //===---------------------------- C++ Features --------------------------===//
