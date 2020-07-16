@@ -2212,6 +2212,13 @@ Sema::ActOnIdExpression(Scope *S, CXXScopeSpec &SS,
     if (D) R.addDecl(D);
   }
 
+  // This could be an implicitly declared Vulkan intrinsic function defined
+  // inside the "vk::" namespace.
+  //if (R.empty() && HasTrailingLParen && II /* && scope_is_vk_namespace */) {
+  //  NamedDecl *D = ImplicitlyDefineFunction(NameLoc, *II, S);
+  //  if (D) R.addDecl(D);
+  //}
+
   // Determine whether this name might be a candidate for
   // argument-dependent lookup.
   bool ADL = UseArgumentDependentLookup(SS, R, HasTrailingLParen);
@@ -2739,8 +2746,9 @@ bool Sema::UseArgumentDependentLookup(const CXXScopeSpec &SS,
     return false;
 
   // Never if a scope specifier was provided.
-  if (SS.isSet())
-    return false;
+  // We want to be able to have intrinsics inside a namespace.
+  //if (SS.isSet())
+  //  return false;
 
   // Only in C++ or ObjC++.
   if (!getLangOpts().CPlusPlus)

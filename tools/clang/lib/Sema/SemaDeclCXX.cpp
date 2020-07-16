@@ -7210,6 +7210,7 @@ Decl *Sema::ActOnStartNamespaceDef(Scope *NamespcScope,
   bool IsInline = InlineLoc.isValid();
   bool IsInvalid = false;
   bool IsStd = false;
+  bool IsVk = false;
   bool AddToKnown = false;
   Scope *DeclRegionScope = NamespcScope->getParent();
 
@@ -7260,6 +7261,13 @@ Decl *Sema::ActOnStartNamespaceDef(Scope *NamespcScope,
       PrevNS = getStdNamespace();
       IsStd = true;
       AddToKnown = !IsInline;
+    } else if (II->isStr("vk") &&
+               CurContext->getRedeclContext()->isTranslationUnit()) {
+      // This is the first "real" definition of the namespace "vk", so update
+      // our cache of the "vk" namespace to point at this definition.
+      PrevNS = getVkNamespace();
+      IsVk = true;
+      AddToKnown = !IsInline;
     } else {
       // We've seen this namespace for the first time.
       AddToKnown = !IsInline;
@@ -7294,6 +7302,8 @@ Decl *Sema::ActOnStartNamespaceDef(Scope *NamespcScope,
 
   if (IsStd)
     StdNamespace = Namespc;
+  if (IsVk)
+    VkNamespace = Namespc;
   if (AddToKnown)
     KnownNamespaces[Namespc] = false;
   
@@ -7380,6 +7390,11 @@ NamespaceDecl *Sema::getStdNamespace() const {
                                  StdNamespace.get(Context.getExternalSource()));
 }
 
+NamespaceDecl *Sema::getVkNamespace() const {
+  return cast_or_null<NamespaceDecl>(
+                                 VkNamespace.get(Context.getExternalSource()));
+}
+
 /// \brief Retrieve the special "std" namespace, which may require us to 
 /// implicitly define the namespace.
 NamespaceDecl *Sema::getOrCreateStdNamespace() {
@@ -7395,6 +7410,23 @@ NamespaceDecl *Sema::getOrCreateStdNamespace() {
   }
 
   return getStdNamespace();
+}
+
+/// \brief Retrieve the special "vk" namespace, which may require us to 
+/// implicitly define the namespace.
+NamespaceDecl *Sema::getOrCreateVkNamespace() {
+  if (!VkNamespace) {
+    // The "vk" namespace has not yet been defined, so build one implicitly.
+    VkNamespace = NamespaceDecl::Create(Context, 
+                                         Context.getTranslationUnitDecl(),
+                                         /*Inline=*/false,
+                                         SourceLocation(), SourceLocation(),
+                                         &PP.getIdentifierTable().get("vk"),
+                                         /*PrevDecl=*/nullptr);
+    getVkNamespace()->setImplicit(true);
+  }
+
+  return getVkNamespace();
 }
 
 bool Sema::isStdInitializerList(QualType Ty, QualType *Element) {

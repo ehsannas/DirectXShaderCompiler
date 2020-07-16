@@ -3454,6 +3454,8 @@ public:
     for (auto && intrinsic : m_intrinsicTables) {
       AddIntrinsicTableMethods(intrinsic);
     }
+
+    S.getOrCreateVkNamespace();
   }
 
   void ForgetSema() override
@@ -3605,6 +3607,12 @@ public:
     // back out.
     if (this->m_sema->Diags.hasFatalErrorOccurred()) {
       return false;
+    }
+
+    // Looking for the implicit "vk" namespace.
+    if (idInfo->getName().equals("vk")) {
+      R.addDecl(getSema()->getOrCreateVkNamespace());
+      return true;
     }
 
     StringRef nameIdentifier = idInfo->getName();
@@ -4179,9 +4187,14 @@ public:
 
     // Intrinsics live in the global namespace, so references to their names
     // should be either unqualified or '::'-prefixed.
-    if (ULE->getQualifier() && ULE->getQualifier()->getKind() != NestedNameSpecifier::Global) {
-      return false;
-    }
+    //if (ULE->getQualifier() && ULE->getQualifier()->getKind() != NestedNameSpecifier::Global) {
+    //  return false;
+    //}
+
+    NestedNameSpecifier *uleQualifier = ULE->getQualifier();
+    auto qualifierKind = uleQualifier->getKind();
+    auto prefix = uleQualifier->getPrefix()->getAsNamespace()->getName();
+
 
     const DeclarationNameInfo declName = ULE->getNameInfo();
     IdentifierInfo* idInfo = declName.getName().getAsIdentifierInfo();

@@ -336,6 +336,10 @@ uint [[]] VkQueueFamilyScope();
 
 } namespace
 
+//namespace vk {
+//u64 [[]] ReadClock(in uint scope);
+//} namespace
+
 namespace StreamMethods {
 
 void [[]] Append(in $match<-1, 1> void x) : stream_append;

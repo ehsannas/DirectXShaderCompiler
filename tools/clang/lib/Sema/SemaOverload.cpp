@@ -10913,7 +10913,7 @@ bool Sema::buildOverloadedCallSet(Scope *S, Expr *Fn,
 #ifndef NDEBUG
   if (ULE->requiresADL()) {
     // To do ADL, we must have found an unqualified name.
-    assert(!ULE->getQualifier() && "qualified name with ADL");
+    //assert(!ULE->getQualifier() && "qualified name with ADL");
 
     // We don't perform ADL for implicit declarations of builtins.
     // Verify that this was correctly set up.

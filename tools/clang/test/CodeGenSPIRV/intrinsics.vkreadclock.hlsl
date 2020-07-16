@@ -3,31 +3,23 @@
 // CHECK: OpCapability ShaderClockKHR
 // CHECK: OpExtension "SPV_KHR_shader_clock"
 
-struct SInstanceData {
-  float4x3 VisualToWorld;
-  float4 Output;
-};
+//namespace vk {
+//void foo() {}
+//}
 
-struct VS_INPUT	{
-  float3 Position : POSITION;
-  SInstanceData	InstanceData : TEXCOORD4;
-};
+//namespace xx {
+//void foo() {}
+//}
 
-float4 main(const VS_INPUT v) : SV_Position {
-	const SInstanceData	I = v.InstanceData;
-  uint64_t clock;
-// CHECK: {{%\d+}} = OpReadClockKHR %ulong %uint_0
-  clock = VkReadClock(VkCrossDeviceScope());
-// CHECK: {{%\d+}} = OpReadClockKHR %ulong %uint_1
-  clock = VkReadClock(VkDeviceScope());
-// CHECK: {{%\d+}} = OpReadClockKHR %ulong %uint_2
-  clock = VkReadClock(VkWorkgroupScope());
-// CHECK: {{%\d+}} = OpReadClockKHR %ulong %uint_3
-  clock = VkReadClock(VkSubgroupScope());
-// CHECK: {{%\d+}} = OpReadClockKHR %ulong %uint_4
-  clock = VkReadClock(VkInvocationScope());
-// CHECK: {{%\d+}} = OpReadClockKHR %ulong %uint_5
-  clock = VkReadClock(VkQueueFamilyScope());
-  return I.Output;
+float4 main(const float4 v : A) : SV_Position {
+  //floor(1.0);
+
+  //xx::foo();
+  vk::foo();
+
+  //VkInvocationScope();
+  //uint64_t clock = vk::ReadClock(VkCrossDeviceScope());
+
+  return 0.xxxx;
 }
 

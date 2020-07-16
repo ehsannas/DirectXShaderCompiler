@@ -2124,6 +2124,8 @@ void Sema::DeclareGlobalNewDelete() {
     getStdBadAlloc()->setImplicit(true);
   }
 
+  getOrCreateVkNamespace();
+
   GlobalNewDeleteDeclared = true;
 
   QualType VoidPtr = Context.getPointerType(Context.VoidTy);

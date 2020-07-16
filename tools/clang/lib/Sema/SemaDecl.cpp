@@ -11204,6 +11204,8 @@ NamedDecl *Sema::ImplicitlyDefineFunction(SourceLocation Loc,
 
   FunctionDecl *FD = cast<FunctionDecl>(ActOnDeclarator(TUScope, D));
   FD->setImplicit();
+  // TODO: Make a copy of this function and add this line to it.
+  //FD->setType(Context.OverloadTy);
 
   CurContext = PrevDC;
 

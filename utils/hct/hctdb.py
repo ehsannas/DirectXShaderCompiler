@@ -2698,6 +2698,7 @@ class db_hlsl(object):
         namespace_beg_re = re.compile(r"^namespace\s+(\w+)\s*{\s*$")
         namespace_end_re = re.compile(r"^}\s*namespace\s*$")
         intrinsic_re = re.compile(r"^\s*([^(]+)\s+\[\[(\S*)\]\]\s+(\w+)\s*\(\s*([^)]*)\s*\)\s*(:\s*\w+\s*)?;$")
+        intrinsic_in_namespace_re = re.compile(r"^\s*([^(]+)\s+\[\[(\S*)\]\]\s+(\w+::\w+)\s*\(\s*([^)]*)\s*\)\s*(:\s*\w+\s*)?;$")
         operand_re = re.compile(r"^:\s*(\w+)\s*$")
         bracket_cleanup_re = re.compile(r"<\s*(\S+)\s*,\s*(\S+)\s*>") # change <a,b> to <a@> to help split params and parse
         params_split_re = re.compile(r"\s*,\s*")
