@@ -34,56 +34,56 @@ SpirvContext::~SpirvContext() {
   accelerationStructureTypeNV->~AccelerationStructureTypeNV();
   rayQueryProvisionalTypeKHR->~RayQueryProvisionalTypeKHR();
 
-  for(auto *sintType : sintTypes)
-    if(sintType) // sintTypes may contain nullptr
+  for (auto *sintType : sintTypes)
+    if (sintType) // sintTypes may contain nullptr
       sintType->~IntegerType();
 
-  for(auto *uintType : uintTypes)
-    if(uintType) // uintTypes may contain nullptr
+  for (auto *uintType : uintTypes)
+    if (uintType) // uintTypes may contain nullptr
       uintType->~IntegerType();
 
-  for(auto *floatType : floatTypes)
-    if(floatType) // floatTypes may contain nullptr
+  for (auto *floatType : floatTypes)
+    if (floatType) // floatTypes may contain nullptr
       floatType->~FloatType();
 
-  for(auto &pair : vecTypes)
-    for(auto *vecType : pair.second)
-      if(vecType) // vecTypes may contain nullptr
+  for (auto &pair : vecTypes)
+    for (auto *vecType : pair.second)
+      if (vecType) // vecTypes may contain nullptr
         vecType->~VectorType();
 
-  for(auto &pair : matTypes)
-    for(auto *matType : pair.second)
+  for (auto &pair : matTypes)
+    for (auto *matType : pair.second)
       matType->~MatrixType();
 
-  for(auto *arrType : arrayTypes)
+  for (auto *arrType : arrayTypes)
     arrType->~ArrayType();
 
-  for(auto *raType : runtimeArrayTypes)
+  for (auto *raType : runtimeArrayTypes)
     raType->~RuntimeArrayType();
 
-  for(auto *fnType : functionTypes)
+  for (auto *fnType : functionTypes)
     fnType->~FunctionType();
 
-  for(auto *structType : structTypes)
+  for (auto *structType : structTypes)
     structType->~StructType();
 
-  for(auto *hybridStructType : hybridStructTypes)
+  for (auto *hybridStructType : hybridStructTypes)
     hybridStructType->~HybridStructType();
 
-  for(auto pair : sampledImageTypes)
+  for (auto pair : sampledImageTypes)
     pair.second->~SampledImageType();
 
-  for(auto *hybridSampledImageType : hybridSampledImageTypes)
+  for (auto *hybridSampledImageType : hybridSampledImageTypes)
     hybridSampledImageType->~HybridSampledImageType();
 
-  for(auto *imgType : imageTypes)
+  for (auto *imgType : imageTypes)
     imgType->~ImageType();
 
-  for(auto &pair : pointerTypes)
-    for(auto &scPtrTypePair : pair.second)
+  for (auto &pair : pointerTypes)
+    for (auto &scPtrTypePair : pair.second)
       scPtrTypePair.second->~SpirvPointerType();
 
-  for(auto *hybridPtrType : hybridPointerTypes)
+  for (auto *hybridPtrType : hybridPointerTypes)
     hybridPtrType->~HybridPointerType();
 }
 
@@ -208,7 +208,8 @@ SpirvContext::getSampledImageType(const ImageType *image) {
 
 const HybridSampledImageType *
 SpirvContext::getSampledImageType(QualType image) {
-  const HybridSampledImageType *result = new (this) HybridSampledImageType(image);
+  const HybridSampledImageType *result =
+      new (this) HybridSampledImageType(image);
   hybridSampledImageTypes.push_back(result);
   return result;
 }
@@ -237,7 +238,8 @@ SpirvContext::getRuntimeArrayType(const SpirvType *elemType,
   if (found != runtimeArrayTypes.end())
     return *found;
 
-  auto inserted = runtimeArrayTypes.insert(new (this) RuntimeArrayType(elemType, arrayStride));
+  auto inserted = runtimeArrayTypes.insert(
+      new (this) RuntimeArrayType(elemType, arrayStride));
   return *(inserted.first);
 }
 
@@ -259,7 +261,8 @@ SpirvContext::getStructType(llvm::ArrayRef<StructType::FieldInfo> fields,
   if (found != structTypes.end())
     return *found;
 
-  structTypes.push_back(new (this) StructType(fields, name, isReadOnly, interfaceType));
+  structTypes.push_back(
+      new (this) StructType(fields, name, isReadOnly, interfaceType));
 
   return structTypes.back();
 }
@@ -267,7 +270,8 @@ SpirvContext::getStructType(llvm::ArrayRef<StructType::FieldInfo> fields,
 const HybridStructType *SpirvContext::getHybridStructType(
     llvm::ArrayRef<HybridStructType::FieldInfo> fields, llvm::StringRef name,
     bool isReadOnly, StructInterfaceType interfaceType) {
-  const HybridStructType *result = new (this) HybridStructType(fields, name, isReadOnly, interfaceType);
+  const HybridStructType *result =
+      new (this) HybridStructType(fields, name, isReadOnly, interfaceType);
   hybridStructTypes.push_back(result);
   return result;
 }

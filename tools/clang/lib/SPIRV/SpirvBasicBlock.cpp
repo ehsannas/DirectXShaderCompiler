@@ -18,10 +18,9 @@ SpirvBasicBlock::SpirvBasicBlock(llvm::StringRef name)
       continueTarget(nullptr) {}
 
 SpirvBasicBlock::~SpirvBasicBlock() {
-  for(auto instructionNode : instructions)
+  for (auto instructionNode : instructions)
     instructionNode.instruction->releaseMemory();
 }
-
 
 bool SpirvBasicBlock::hasTerminator() const {
   return !instructions.empty() &&

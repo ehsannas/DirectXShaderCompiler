@@ -70,8 +70,8 @@ public:
   /// on failure.
   ///
   /// At any time, there can only exist at most one function under building.
-  SpirvFunction *beginFunction(QualType returnType,
-                               SourceLocation, llvm::StringRef name = "",
+  SpirvFunction *beginFunction(QualType returnType, SourceLocation,
+                               llvm::StringRef name = "",
                                bool isPrecise = false,
                                SpirvFunction *func = nullptr);
 
@@ -605,9 +605,9 @@ private:
   ASTContext &astContext;
   SpirvContext &context; ///< From which we allocate various SPIR-V object
 
-  std::unique_ptr<SpirvModule> mod;             ///< The current module being built
-  SpirvFunction *function;      ///< The current function being built
-  SpirvBasicBlock *insertPoint; ///< The current basic block being built
+  std::unique_ptr<SpirvModule> mod; ///< The current module being built
+  SpirvFunction *function;          ///< The current function being built
+  SpirvBasicBlock *insertPoint;     ///< The current basic block being built
 
   /// \brief List of basic blocks being built.
   ///
@@ -642,7 +642,7 @@ void SpirvBuilder::requireCapability(spv::Capability cap, SourceLocation loc) {
 
 void SpirvBuilder::requireExtension(llvm::StringRef ext, SourceLocation loc) {
   auto *extension = new (context) SpirvExtension(loc, ext);
-  if(!mod->addExtension(extension))
+  if (!mod->addExtension(extension))
     extension->releaseMemory();
 }
 

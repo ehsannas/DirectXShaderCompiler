@@ -26,25 +26,25 @@ SpirvModule::~SpirvModule() {
     ext->releaseMemory();
   for (auto *set : extInstSets)
     set->releaseMemory();
-  if(memoryModel)
+  if (memoryModel)
     memoryModel->releaseMemory();
-  for(auto *entry : entryPoints)
+  for (auto *entry : entryPoints)
     entry->releaseMemory();
-  for(auto *exec : executionModes)
+  for (auto *exec : executionModes)
     exec->releaseMemory();
-  for(auto *str : constStrings)
+  for (auto *str : constStrings)
     str->releaseMemory();
-  for(auto *d : debugSources)
+  for (auto *d : debugSources)
     d->releaseMemory();
-  for(auto *mp : moduleProcesses)
+  for (auto *mp : moduleProcesses)
     mp->releaseMemory();
-  for(auto *decoration : decorations)
+  for (auto *decoration : decorations)
     decoration->releaseMemory();
-  for(auto *constant : constants)
+  for (auto *constant : constants)
     constant->releaseMemory();
-  for(auto *var : variables)
+  for (auto *var : variables)
     var->releaseMemory();
-  for(auto *f : functions)
+  for (auto *f : functions)
     f->~SpirvFunction();
 }
 

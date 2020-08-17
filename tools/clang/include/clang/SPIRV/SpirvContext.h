@@ -277,7 +277,7 @@ private:
   llvm::DenseSet<const ImageType *, ImageTypeMapInfo> imageTypes;
   const SamplerType *samplerType;
   llvm::DenseMap<const ImageType *, const SampledImageType *> sampledImageTypes;
-  llvm::SmallVector<const HybridSampledImageType *, 4>hybridSampledImageTypes;
+  llvm::SmallVector<const HybridSampledImageType *, 4> hybridSampledImageTypes;
   llvm::DenseSet<const ArrayType *, ArrayTypeMapInfo> arrayTypes;
   llvm::DenseSet<const RuntimeArrayType *, RuntimeArrayTypeMapInfo>
       runtimeArrayTypes;
