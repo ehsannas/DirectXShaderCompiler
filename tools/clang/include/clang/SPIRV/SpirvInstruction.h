@@ -33,7 +33,7 @@ class SpirvString;
 class Visitor;
 
 #define DEFINE_RELEASE_MEMORY_FOR_CLASS(cls)                                   \
-  void releaseMemory() override { this->~##cls(); }
+  void releaseMemory() override { this->~cls(); }
 
 /// \brief The base class for representing SPIR-V instructions.
 class SpirvInstruction {
