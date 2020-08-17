@@ -23,9 +23,18 @@ namespace spirv {
 
 SpirvBuilder::SpirvBuilder(ASTContext &ac, SpirvContext &ctx,
                            const SpirvCodeGenOptions &opt)
-    : astContext(ac), context(ctx), mod(nullptr), function(nullptr),
+    : astContext(ac), context(ctx), mod(llvm::make_unique<SpirvModule>()), function(nullptr),
       spirvOptions(opt), builtinVars(), stringLiterals() {
-  mod = new (context) SpirvModule;
+}
+
+SpirvBuilder::~SpirvBuilder() {
+  // If an error occurs before the ownership of the function and basic block
+  // under construction is moved to the SpirvModule, SpirvBuilder should
+  // clean up after itself.
+  if(function)
+    function->~SpirvFunction();
+  for(auto *bb : basicBlocks)
+    bb->~SpirvBasicBlock();
 }
 
 SpirvFunction *SpirvBuilder::beginFunction(QualType returnType,

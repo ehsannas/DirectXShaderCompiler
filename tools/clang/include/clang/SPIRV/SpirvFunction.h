@@ -26,7 +26,8 @@ class SpirvFunction {
 public:
   SpirvFunction(QualType astReturnType, SourceLocation,
                 llvm::StringRef name = "", bool precise = false);
-  ~SpirvFunction() = default;
+
+  ~SpirvFunction();
 
   // Forbid copy construction and assignment
   SpirvFunction(const SpirvFunction &) = delete;
